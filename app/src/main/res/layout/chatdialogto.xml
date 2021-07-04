@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="24dp">
+
+
+    <TextView
+        android:id="@+id/ChatLogText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+
+        android:layout_toRightOf="@+id/ChatLogImage"
+        android:textColor="#ffff"
+        android:background="@drawable/round_edge"
+
+        android:padding="10dp"
+        android:layout_centerInParent="true"
+        android:maxWidth="200dp"
+
+        android:layout_toEndOf="@+id/ChatLogImage" />
+
+    <ImageView
+        android:id="@+id/ChatLogImage"
+        android:layout_width="46dp"
+        android:layout_height="65dp"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/ic_launcher_foreground"
+        android:text="Send"
+
+
+      />
+
+
+</RelativeLayout>
