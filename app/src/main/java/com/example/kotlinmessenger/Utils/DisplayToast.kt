@@ -4,7 +4,7 @@ import android.content.Context
 import android.view.Gravity
 import android.widget.Toast
 
-class DisplayToast(var Message : String , Long : Boolean , position : Position ,con : Context) {
+class DisplayToast(Message : String , Long : Boolean , position : Position ,con : Context) {
     init {
         var toast : Toast
         if (Long) {
