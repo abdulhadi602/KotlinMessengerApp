@@ -2,52 +2,48 @@ package com.example.kotlinmessenger.Utils
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
+import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
 import android.os.Build
+import android.os.IBinder
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-
 import com.example.kotlinmessenger.Activities.Welcome.WelcomeScreen
+import com.example.kotlinmessenger.Data.IDs
+import com.example.kotlinmessenger.Data.UserData
+import com.example.kotlinmessenger.Data.Users
 import com.example.kotlinmessenger.R
+import com.google.firebase.FirebaseApp
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.messaging.FirebaseMessagingService
+import com.google.gson.Gson
+import com.google.gson.JsonElement
 
-class Notification(var con: Context, var title: String?, var Body: String?) {
-    constructor(con: Context) : this(con,null,null)
+class Notification(var con: Context)  {
+
+
     companion object{
         var notificationID : Int = 0
+        lateinit var con : Context
+        lateinit var notificationManager: NotificationManager
+        val NOTIFICATION_CAHNNEL_ID = "CHANNEL_1"
     }
-    val NOTIFICATION_CAHNNEL_ID = "CHANNEL_1"
-    init {
-        if(title != null && Body != null) {
-            sendNotification(this.title!!, this.Body!!)
-        }else{
-            createNotificationChannel()
-        }
-    }
-    private fun sendNotification(title: String, Body: String) {
-        val intent = Intent(con, WelcomeScreen::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-        val pendingIntent = PendingIntent.getActivity(
-            con, 0 /* Request code */, intent,
-            PendingIntent.FLAG_ONE_SHOT
-        )
-        val notificationBuilder: NotificationCompat.Builder =
-            NotificationCompat.Builder(con,NOTIFICATION_CAHNNEL_ID)
-                .setSmallIcon(R.drawable.sendicon)
-                .setContentTitle(title)
-                .setContentText(Body)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setContentIntent(pendingIntent)
-                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-                .setAutoCancel(true)
 
-        with(NotificationManagerCompat.from(con)){
-            notify(notificationID,notificationBuilder.build())
-        }
-        //notificationManager.notify(notificationID /* ID of notification */, notificationBuilder.build())
-        notificationID++
+    init {
+        this.con = con
+            createNotificationChannel()
+            Firebaseref.init()
+        con.startForegroundService(Intent(con.applicationContext,NotificationService::class.java))
+
+
     }
+
     private fun createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
@@ -58,10 +54,13 @@ class Notification(var con: Context, var title: String?, var Body: String?) {
             val channel = NotificationChannel(NOTIFICATION_CAHNNEL_ID, name, importance).apply {
                 description = descriptionText
             }
+
             // Register the channel with the system
-            val notificationManager: NotificationManager = con.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager = con.getSystemService(NotificationManager::class.java)
             notificationManager.createNotificationChannel(channel)
         }
     }
+
+
 
 }

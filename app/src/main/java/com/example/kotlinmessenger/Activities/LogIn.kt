@@ -1,5 +1,6 @@
 package com.example.kotlinmessenger.Activities
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -12,6 +13,7 @@ import com.example.kotlinmessenger.Activities.Welcome.WelcomeScreen
 import com.example.kotlinmessenger.Data.IDs
 import com.example.kotlinmessenger.R
 import com.example.kotlinmessenger.Utils.DisplayToast
+import com.example.kotlinmessenger.Utils.Notification
 import com.example.kotlinmessenger.Utils.Position
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -38,6 +40,8 @@ class LogIn : AppCompatActivity() {
         }
         return empty
     }
+
+
     var LoginListener = View.OnClickListener {
         if(isFieldEmpty()){
             return@OnClickListener
@@ -65,6 +69,15 @@ class LogIn : AppCompatActivity() {
         if(user != null){
             val intent = Intent(this@LogIn , WelcomeScreen:: class.java)
             IDs.UserId = user.uid
+            val sharedPref = this?.getPreferences(Context.MODE_PRIVATE)
+            IDs.sharedPreferences = sharedPref
+            with(sharedPref.edit()){
+                putString("UserId","${IDs.UserId}")
+                apply()
+            }
+
+
+            Notification(this@LogIn)
             startActivity(intent)
         }
         val user = FirebaseAuth.getInstance().currentUser

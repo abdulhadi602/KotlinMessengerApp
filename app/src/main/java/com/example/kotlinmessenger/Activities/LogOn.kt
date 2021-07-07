@@ -2,6 +2,7 @@ package com.example.kotlinmessenger.Activities
 
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -19,6 +20,7 @@ import com.example.kotlinmessenger.Utils.DisplayToast
 import com.example.kotlinmessenger.Utils.Firebaseref
 import com.example.kotlinmessenger.Utils.Notification
 import com.example.kotlinmessenger.Utils.Position
+import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseUser
@@ -41,11 +43,13 @@ class LogOn : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-         Firebaseref.auth = FirebaseAuth.getInstance()
+
         setContentView(R.layout.activity_main)
+
+        FirebaseApp.initializeApp(this)
         Register.setOnClickListener(RegisterListener)
         LoginScreen.setOnClickListener(LogOnScreenListener)
-        Firebaseref.database = FirebaseDatabase.getInstance("https://kotlinmessenger-74ae0-default-rtdb.europe-west1.firebasedatabase.app/").getReference()
+        Firebaseref.init()
         var startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
              if(it.resultCode == Activity.RESULT_OK){
                  imageUri = it.data?.data
@@ -60,7 +64,7 @@ class LogOn : AppCompatActivity() {
             startForResult.launch(intent)
 
         })
-        Notification(this@LogOn)
+
     }
     private fun isFieldEmpty() : Boolean{
         var empty = false
@@ -84,6 +88,7 @@ class LogOn : AppCompatActivity() {
         }
         return empty
     }
+
 
     override fun onStart() {
         super.onStart()
@@ -115,34 +120,39 @@ class LogOn : AppCompatActivity() {
             }
     }
     private fun updateUI(user: FirebaseUser?) {
+        Notification(this@LogOn)
         if(user!=null) {
             if (imageUri == null) {
                 val intent = Intent(this@LogOn , WelcomeScreen:: class.java)
                 startActivity(intent)
             }
+            else {
+                var filename = UUID.randomUUID().toString()
+                val username = Username.text.toString()
+                val profileUpdate = UserProfileChangeRequest.Builder()
+                    .setDisplayName(username)
+                    .setPhotoUri(Uri.parse("/images/$filename"))
+                    .build()
 
-            var filename = UUID.randomUUID().toString()
-            val username = Username.text.toString()
-            val profileUpdate = UserProfileChangeRequest.Builder()
-                .setDisplayName(username)
-                .setPhotoUri(Uri.parse("/images/$filename"))
-                .build()
+                Firebaseref.auth.currentUser!!.updateProfile(profileUpdate).addOnSuccessListener() {
 
-            Firebaseref.auth.currentUser!!.updateProfile(profileUpdate).addOnSuccessListener() {
+                    DisplayToast("Profile Updated with image", false, Position.TOP, this)
+                    val ref = FirebaseStorage.getInstance().getReference("/images/$filename")
+                    ref.putFile(imageUri!!).addOnSuccessListener {
+                        Log.d("TAG", "Image uploaded")
+                        writeNewUser(
+                            profileUpdate.displayName!!,
+                            Firebaseref.auth.currentUser!!.email!!,
+                            profileUpdate.photoUri.toString()
+                        )
+                    }
 
-                DisplayToast("Profile Updated with image",false,Position.TOP,this)
-                val ref = FirebaseStorage.getInstance().getReference("/images/$filename")
-                ref.putFile(imageUri!!).addOnSuccessListener {
-                    Log.d("TAG", "Image uploaded")
-                    writeNewUser(profileUpdate.displayName!!,Firebaseref.auth.currentUser!!.email!!,profileUpdate.photoUri.toString())
+
+                }.addOnFailureListener {
+                    Log.d("TAG", "Failed to save image and username $it")
                 }
 
-
-            }.addOnFailureListener{
-                Log.d("TAG","Failed to save image and username $it")
             }
-
-
 
         }else{
             Username.setText("")
@@ -161,6 +171,13 @@ class LogOn : AppCompatActivity() {
     fun writeNewUser( name: String, email: String,Img : String) {
         val userId = FirebaseAuth.getInstance().currentUser!!.uid
         IDs.UserId = userId
+        val sharedPref = this?.getPreferences(Context.MODE_PRIVATE)
+        IDs.sharedPreferences = sharedPref
+        with(sharedPref.edit()){
+            putString("UserId","${IDs.UserId}")
+            apply()
+        }
+
         val user = UserData(name, email ,Img,userId)
 
        val map = HashMap<String,String>()

@@ -11,6 +11,7 @@ import com.example.kotlinmessenger.Data.ChatMessage
 import com.example.kotlinmessenger.Data.IDs
 import com.example.kotlinmessenger.R
 import com.example.kotlinmessenger.Utils.Firebaseref
+import com.example.kotlinmessenger.Utils.Notification
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -49,6 +50,7 @@ lateinit var chatLog : ArrayList<ChatMessage>
 
         SendBtn.setOnClickListener(SendListener)
     }
+
 
     override fun onPause() {
         super.onPause()

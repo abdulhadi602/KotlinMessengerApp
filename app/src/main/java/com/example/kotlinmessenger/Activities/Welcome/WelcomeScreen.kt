@@ -13,7 +13,6 @@ import com.example.kotlinmessenger.R
 import com.example.kotlinmessenger.Utils.Firebaseref
 import com.example.kotlinmessenger.Utils.Notification
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -22,7 +21,6 @@ import com.google.gson.Gson
 import com.google.gson.JsonElement
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_welcome_screen.*
-import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
@@ -66,7 +64,7 @@ class WelcomeScreen : AppCompatActivity(),
         User.text = "Welcome " + FirebaseAuth.getInstance().currentUser!!.displayName
 
 
-
+        Firebaseref.init()
         Firebaseref.database.addValueEventListener(object : ValueEventListener {
 
 
@@ -90,6 +88,7 @@ class WelcomeScreen : AppCompatActivity(),
 
 
     }
+
 
     override fun onResume() {
         super.onResume()
@@ -123,14 +122,14 @@ class WelcomeScreen : AppCompatActivity(),
                     val map = chatMessage.value as HashMap<String, Any>
                     if (map.get("messageRead") == false) {
                         temp.UnreadMessages += 1
-                        if (map.get("notificationReceived") == false) {
+                        /**if (map.get("notificationReceived") == false) {
                             PendingNotificationsPerUser += 1
                             map.set("notificationReceived", true)
                             chatMessagesNotifcationUpdate.put(chatMessage.key.toString(),map)
-                        }
+                        }**/
                     }
                 }
-                if(PendingNotificationsPerUser>0){
+                /**if(PendingNotificationsPerUser>0){
                     Notification(
                         this@WelcomeScreen,
                         "Messages",
@@ -142,7 +141,7 @@ class WelcomeScreen : AppCompatActivity(),
                         ).addOnSuccessListener {
 
                         }
-                }
+                }**/
                 UserList.add(temp)
                 Users.add(user)
             }
