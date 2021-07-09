@@ -4,34 +4,39 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="100dp"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:layout_marginBottom="2dp"
+    android:background="@drawable/card_view">
 
 
     <TextView
         android:id="@+id/List_Username"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-
+        android:layout_height="75dp"
         android:layout_centerVertical="true"
         android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
+        android:gravity="center|left"
+        android:minEms="24"
         android:text="Shazaam"
-        android:textSize="24dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/List_UserImg"
+        app:layout_constraintEnd_toStartOf="@+id/UnreadMessages"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/List_UserImg"
         app:layout_constraintTop_toTopOf="@+id/List_UserImg"
-        app:layout_constraintVertical_bias="0.552" />
+        app:layout_constraintVertical_bias="0.52" />
 
     <ImageView
         android:id="@+id/List_UserImg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+
 
         android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="76dp"
-        android:src="@drawable/ic_launcher_foreground"
+        android:src="@drawable/profile_icon"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

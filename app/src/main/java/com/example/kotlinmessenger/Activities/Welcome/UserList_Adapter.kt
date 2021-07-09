@@ -37,7 +37,7 @@ class UserList_Adapter(Users : ArrayList<UserData>, con : Context, onClick : OnL
        val temp = Users[position]
 
 
-            Picasso.with(con).load(temp.Image).into(holder.Img)
+            //Picasso.with(con).load(temp.Image).into(holder.Img)
 
 
         holder.Name.text = temp.Name
