@@ -15,7 +15,6 @@
 
 
         android:layout_toRightOf="@+id/ChatLogImage"
-        android:textColor="#ffff"
         android:background="@drawable/round_edge_to"
 
         android:padding="10dp"

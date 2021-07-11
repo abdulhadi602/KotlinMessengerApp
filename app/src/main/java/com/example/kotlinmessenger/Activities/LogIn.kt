@@ -6,8 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
-import android.view.Display
 import android.view.View
+import android.view.animation.*
 
 import com.example.kotlinmessenger.Activities.Welcome.WelcomeScreen
 import com.example.kotlinmessenger.Data.IDs
@@ -21,12 +21,94 @@ import kotlinx.android.synthetic.main.activity_log_in.*
 import kotlinx.android.synthetic.main.activity_log_in.Password
 
 class LogIn : AppCompatActivity() {
+lateinit var scale_Down : Animation
+    lateinit var scale_Up : Animation
+    lateinit var rotate : Animation
+    lateinit var rotate_circlular : Animation
 
+
+    lateinit var wobble_one : Animation
+    lateinit var wobble_two : Animation
+    lateinit var wobble_three : Animation
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_log_in)
         LogOn.setOnClickListener(LoginListener)
+        scale_Down = AnimationUtils.loadAnimation(this,R.anim.scale_down_x)
+        scale_Down.setAnimationListener(scale_downX_Listener)
+        scale_Up = AnimationUtils.loadAnimation(this,R.anim.scale_up_x)
+        scale_Up.setAnimationListener(scale_upX_Listener)
+        rotate = AnimationUtils.loadAnimation(this,R.anim.rotate_clockwise)
+        rotate.setInterpolator ( LinearInterpolator())
+        rotate.setAnimationListener(rotate_Listener)
+        rotate_circlular = AnimationUtils.loadAnimation(this,R.anim.rotation_animation)
+
+        wobble_one = AnimationUtils.loadAnimation(this,R.anim.wobble1)
+
+
+        fade_left.setOnClickListener {
+            fade_left.startAnimation(AnimationUtils.loadAnimation(this,R.anim.fade_translate_left))
+        }
+        fade_right.setOnClickListener {
+            fade_right.startAnimation(AnimationUtils.loadAnimation(this,R.anim.fade_translate_right))
+        }
+        fade_up.setOnClickListener {
+            fade_up.startAnimation(AnimationUtils.loadAnimation(this,R.anim.fade_translate_up))
+        }
+        fade_down.setOnClickListener {
+            fade_down.startAnimation(AnimationUtils.loadAnimation(this,R.anim.fade_translate_down))
+        }
+        Wobble.setOnClickListener {
+            Wobble.startAnimation(wobble_one)
+        }
+
     }
+
+
+    var rotate_Listener = (object : Animation.AnimationListener{
+        override fun onAnimationStart(animation: Animation?) {
+
+        }
+
+        override fun onAnimationEnd(animation: Animation?) {
+            animation_img.startAnimation(scale_Up)
+        }
+
+        override fun onAnimationRepeat(animation: Animation?) {
+
+        }
+
+    })
+    var scale_downX_Listener = (object : Animation.AnimationListener{
+        override fun onAnimationStart(animation: Animation?) {
+
+        }
+
+        override fun onAnimationEnd(animation: Animation?) {
+            animation_img.startAnimation(rotate)
+
+        }
+
+        override fun onAnimationRepeat(animation: Animation?) {
+
+        }
+
+    })
+    var scale_upX_Listener = (object : Animation.AnimationListener{
+        override fun onAnimationStart(animation: Animation?) {
+
+        }
+
+        override fun onAnimationEnd(animation: Animation?) {
+            animation_img.startAnimation(scale_Down)
+        }
+
+        override fun onAnimationRepeat(animation: Animation?) {
+
+        }
+
+    })
+
     private fun isFieldEmpty() : Boolean{
         var empty = false
         if(TextUtils.isEmpty(UsernameOrEmail.text)) {
@@ -43,13 +125,22 @@ class LogIn : AppCompatActivity() {
 
 
     var LoginListener = View.OnClickListener {
+
+
         if(isFieldEmpty()){
             return@OnClickListener
+        }else{
+
+                animation_img.startAnimation(scale_Down)
+
+            return@OnClickListener
+
         }
         Log.d("TAG", "${UsernameOrEmail.text}")
 
         FirebaseAuth.getInstance().signInWithEmailAndPassword(UsernameOrEmail.text.toString(), Password.text.toString())
             .addOnCompleteListener(this) { task ->
+
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
 
@@ -69,9 +160,9 @@ class LogIn : AppCompatActivity() {
         if(user != null){
             val intent = Intent(this@LogIn , WelcomeScreen:: class.java)
             IDs.UserId = user.uid
-            val sharedPref = this?.getPreferences(Context.MODE_PRIVATE)
-            IDs.sharedPreferences = sharedPref
-            with(sharedPref.edit()){
+            IDs.sharedPreferences = this?.getPreferences(Context.MODE_PRIVATE)
+
+            with(IDs.sharedPreferences.edit()){
                 putString("UserId","${IDs.UserId}")
                 apply()
             }

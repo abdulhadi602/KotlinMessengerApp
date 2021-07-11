@@ -120,11 +120,11 @@ class LogOn : AppCompatActivity() {
             }
     }
     private fun updateUI(user: FirebaseUser?) {
-        Notification(this@LogOn)
+
         if(user!=null) {
             if (imageUri == null) {
-                val intent = Intent(this@LogOn , WelcomeScreen:: class.java)
-                startActivity(intent)
+//                val intent = Intent(this@LogOn , WelcomeScreen:: class.java)
+//                startActivity(intent)
             }
             else {
                 var filename = UUID.randomUUID().toString()
@@ -171,13 +171,13 @@ class LogOn : AppCompatActivity() {
     fun writeNewUser( name: String, email: String,Img : String) {
         val userId = FirebaseAuth.getInstance().currentUser!!.uid
         IDs.UserId = userId
-        val sharedPref = this?.getPreferences(Context.MODE_PRIVATE)
-        IDs.sharedPreferences = sharedPref
-        with(sharedPref.edit()){
+        IDs.sharedPreferences = this?.getPreferences(Context.MODE_PRIVATE)
+
+        with(IDs.sharedPreferences.edit()){
             putString("UserId","${IDs.UserId}")
             apply()
         }
-
+        Notification(this@LogOn)
         val user = UserData(name, email ,Img,userId)
 
        val map = HashMap<String,String>()

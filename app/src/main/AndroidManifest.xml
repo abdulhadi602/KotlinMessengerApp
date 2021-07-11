@@ -13,10 +13,15 @@
         android:supportsRtl="true"
 
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.ChatLog.ChatLog"></activity>
-        <activity android:name=".Activities.Welcome.WelcomeScreen" />
-        <activity android:name=".Activities.LogIn" />
-        <activity android:name=".Activities.LogOn">
+        <activity
+            android:name=".Activities.ChatLog.ChatLog"
+            android:configChanges="orientation|screenSize" />
+        <activity android:name=".Activities.Welcome.WelcomeScreen" android:configChanges="orientation|screenSize"
+            />
+        <activity android:name=".Activities.LogIn" android:configChanges="orientation|screenSize"
+            />
+        <activity android:name=".Activities.LogOn" android:configChanges="orientation|screenSize"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
