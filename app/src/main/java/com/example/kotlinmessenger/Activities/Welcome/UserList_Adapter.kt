@@ -8,9 +8,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.example.kotlinmessenger.Data.UserData
+import com.example.kotlinmessenger.Model.UserData
 import com.example.kotlinmessenger.R
-import com.squareup.picasso.Picasso
 
 class UserList_Adapter(Users : ArrayList<UserData>, con : Context, onClick : OnListItemClicked) : RecyclerView.Adapter<UserList_Adapter.ViewHolder>() {
     var Users : ArrayList<UserData>

@@ -10,7 +10,7 @@ class Firebaseref {
         lateinit var auth: FirebaseAuth
         lateinit var database: DatabaseReference
         fun init(){
-            //  mPushHandler = iPushHandler;
+            //mPushHandler = iPushHandler;
 
             auth = FirebaseAuth.getInstance()
             database = FirebaseDatabase.getInstance("https://kotlinmessenger-74ae0-default-rtdb.europe-west1.firebasedatabase.app/").getReference()

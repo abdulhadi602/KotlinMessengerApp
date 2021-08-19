@@ -7,8 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.kotlinmessenger.Data.ChatMessage
-import com.example.kotlinmessenger.Data.IDs
+import com.example.kotlinmessenger.Model.ChatMessage
+import com.example.kotlinmessenger.Model.IDs
 import com.example.kotlinmessenger.R
 
 class ChatLogAdapter(ChatLog : ArrayList<ChatMessage>, con : Context, onClick : OnListItemClicked) : RecyclerView.Adapter<ChatLogAdapter.ViewHolder>() {

@@ -6,12 +6,11 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.kotlinmessenger.Activities.ChatLog.ChatLog
-import com.example.kotlinmessenger.Data.IDs
-import com.example.kotlinmessenger.Data.UserData
-import com.example.kotlinmessenger.Data.Users
+import com.example.kotlinmessenger.Model.IDs
+import com.example.kotlinmessenger.Model.UserData
+import com.example.kotlinmessenger.Model.Users
 import com.example.kotlinmessenger.R
 import com.example.kotlinmessenger.Utils.Firebaseref
-import com.example.kotlinmessenger.Utils.Notification
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError

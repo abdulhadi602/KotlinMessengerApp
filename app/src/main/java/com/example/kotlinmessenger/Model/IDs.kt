@@ -1,9 +1,11 @@
-package com.example.kotlinmessenger.Data
+package com.example.kotlinmessenger.Model
 
-import android.content.Context
 import android.content.SharedPreferences
 
 class IDs {
+
+
+
     companion object{
         lateinit var UserId : String
         lateinit var LastToId : String

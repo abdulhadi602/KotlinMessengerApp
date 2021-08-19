@@ -9,12 +9,11 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.kotlinmessenger.Activities.Welcome.WelcomeScreen
-import com.example.kotlinmessenger.Data.IDs
-import com.example.kotlinmessenger.Data.UserData
+import com.example.kotlinmessenger.Model.IDs
+import com.example.kotlinmessenger.Model.UserData
 import com.example.kotlinmessenger.R
 import com.example.kotlinmessenger.Utils.DisplayToast
 import com.example.kotlinmessenger.Utils.Firebaseref
@@ -22,12 +21,9 @@ import com.example.kotlinmessenger.Utils.Notification
 import com.example.kotlinmessenger.Utils.Position
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
-import kotlinx.android.synthetic.main.activity_log_in.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.Password
 import java.util.*
@@ -36,6 +32,7 @@ import kotlin.collections.HashMap
 
 class LogOn : AppCompatActivity() {
     private val pickImage = 100
+
     private var imageUri: Uri? = null
 
 
